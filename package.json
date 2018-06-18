@@ -1,0 +1,26 @@
+{
+  "name": "cards-server",
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint src",
+    "start": "PUBLIC='../../cards-client/dist' nodemon src",
+    "test": "jest --watchAll"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "author": "Kristoffer Ahlqvist",
+  "dependencies": {
+    "@most/create": "^2.0.1",
+    "express": "^4.16.3",
+    "most": "^1.7.3",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "jest": "^23.1.0",
+    "nodemon": "^1.17.5",
+    "pre-commit": "^1.2.2"
+  }
+}
