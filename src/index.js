@@ -5,6 +5,8 @@ const {create} = require('@most/create');
 const path = require('path');
 const socketio = require('socket.io');
 
+const update = require('./update');
+
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
@@ -15,23 +17,6 @@ app.use(express.static(path.join(__dirname, publicPath)));
 let state = {
   players: [],
 };
-
-function update(state, action) {
-  switch (action.type) {
-  case 'player connected': {
-    const players = state.players.concat([action.payload]);
-    return {...state, players};
-  }
-  case 'player disconnected': {
-    const players = state.players.filter((socket) => {
-      return socket.id !== action.payload;
-    });
-    return {...state, players};
-  }
-  default:
-    return state;
-  }
-}
 
 function personalizeState(state) {
   const players = state.players.map((socket) => socket.id);
