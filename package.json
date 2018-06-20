@@ -15,6 +15,7 @@
     "deep-equal": "^1.0.1",
     "express": "^4.16.3",
     "most": "^1.7.3",
+    "most-proxy": "^3.3.0",
     "socket.io": "^2.1.1"
   },
   "devDependencies": {

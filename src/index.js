@@ -1,9 +1,12 @@
 const deepEqual = require('deep-equal');
 const express = require('express');
 const http = require('http');
+const most = require('most');
+const {proxy} = require('most-proxy');
 const path = require('path');
 const socketio = require('socket.io');
 
+const createGameEngineAction$ = require('./create-game-engine-action-stream');
 const createSocketAction$ = require('./create-socket-action-stream');
 const createState$ = require('./create-state-stream');
 
@@ -19,8 +22,12 @@ function personalizeState(state) {
   return {...state, players};
 }
 
-const action$ = createSocketAction$(io);
+const {attach, stream} = proxy();
+const gameEngineAction$ = createGameEngineAction$(stream);
+const socketAction$ = createSocketAction$(io);
+const action$ = most.merge(gameEngineAction$, socketAction$);
 const state$ = createState$(action$);
+attach(state$);
 
 state$.skipRepeatsWith(deepEqual).observe((state) => {
   if (state.players.length) {

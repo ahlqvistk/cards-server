@@ -1,4 +1,5 @@
 module.exports = function update(state, {type, payload}) {
+  console.log('action:', type);
   switch (type) {
   case 'player connected': {
     if (state.players.length >= 4) {
