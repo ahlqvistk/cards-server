@@ -1,10 +1,10 @@
 const express = require('express');
 const http = require('http');
-const most = require('most');
 const {create} = require('@most/create');
 const path = require('path');
 const socketio = require('socket.io');
 
+const createSocketAction$ = require('./create-socket-action-stream');
 const update = require('./update');
 
 const app = express();
@@ -21,42 +21,6 @@ let state = {
 function personalizeState(state) {
   const players = state.players.map((socket) => socket.id);
   return {...state, players};
-}
-
-function createSocketAction$(io) {
-  const socket$ = most.fromEvent('connection', io);
-
-  const connect$ = socket$.map((socket) => ({
-    type: 'player connected',
-    payload: socket,
-  }));
-
-  const disconnect$ = create((add, end, error) => {
-    socket$.observe((socket) => {
-      socket.on('disconnect', () => {
-        add({
-          type: 'player disconnected',
-          payload: socket.id,
-        });
-      });
-    });
-  });
-
-  const player$ = create((add, end, error) => {
-    socket$.observe((socket) => {
-      socket.on('action', (data) => {
-        add({
-          type: data.action,
-          payload: {
-            id: socket.id,
-            data: data,
-          },
-        });
-      });
-    });
-  });
-
-  return most.merge(connect$, disconnect$, player$);
 }
 
 function createState$(action$) {
