@@ -16,14 +16,16 @@ let state = {
   players: [],
 };
 
-function update(state, event) {
-  switch (event.event) {
+function update(state, action) {
+  switch (action.type) {
   case 'player connected': {
-    const players = state.players.concat([event.socket]);
+    const players = state.players.concat([action.payload]);
     return {...state, players};
   }
   case 'player disconnected': {
-    const players = state.players.filter((socket) => socket.id !== event.id);
+    const players = state.players.filter((socket) => {
+      return socket.id !== action.payload;
+    });
     return {...state, players};
   }
   default:
@@ -36,51 +38,53 @@ function personalizeState(state) {
   return {...state, players};
 }
 
-function createEvent$(io) {
+function createSocketAction$(io) {
   const socket$ = most.fromEvent('connection', io);
 
   const connect$ = socket$.map((socket) => ({
-    event: 'player connected',
-    socket,
+    type: 'player connected',
+    payload: socket,
   }));
 
   const disconnect$ = create((add, end, error) => {
     socket$.observe((socket) => {
       socket.on('disconnect', () => {
         add({
-          event: 'player disconnected',
-          id: socket.id,
+          type: 'player disconnected',
+          payload: socket.id,
         });
       });
     });
   });
 
-  const action$ = create((add, end, error) => {
+  const player$ = create((add, end, error) => {
     socket$.observe((socket) => {
       socket.on('action', (data) => {
         add({
-          event: data.event,
-          id: socket.id,
-          data,
+          type: data.action,
+          payload: {
+            id: socket.id,
+            data: data,
+          },
         });
       });
     });
   });
 
-  return most.merge(connect$, disconnect$, action$);
+  return most.merge(connect$, disconnect$, player$);
 }
 
-function createState$(event$) {
+function createState$(action$) {
   return create((add, end, error) => {
-    event$.observe((event) => {
-      state = update(state, event);
+    action$.observe((action) => {
+      state = update(state, action);
       add(state);
     });
   });
 }
 
-const event$ = createEvent$(io);
-const state$ = createState$(event$);
+const action$ = createSocketAction$(io);
+const state$ = createState$(action$);
 
 state$.observe((state) => {
   if (state.players.length) {
