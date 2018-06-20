@@ -6,7 +6,7 @@ module.exports = function createSocketAction$(io) {
 
   const connect$ = socket$.map((socket) => ({
     type: 'player connected',
-    payload: socket,
+    payload: {socket},
   }));
 
   const disconnect$ = create((add, end, error) => {
@@ -14,7 +14,7 @@ module.exports = function createSocketAction$(io) {
       socket.on('disconnect', () => {
         add({
           type: 'player disconnected',
-          payload: socket.id,
+          payload: {socketId: socket.id},
         });
       });
     });
@@ -26,7 +26,7 @@ module.exports = function createSocketAction$(io) {
         add({
           type: data.action,
           payload: {
-            id: socket.id,
+            socketId: socket.id,
             data: data,
           },
         });
