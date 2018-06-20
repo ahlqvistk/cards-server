@@ -1,3 +1,4 @@
+const deepEqual = require('deep-equal');
 const express = require('express');
 const http = require('http');
 const path = require('path');
@@ -21,7 +22,7 @@ function personalizeState(state) {
 const action$ = createSocketAction$(io);
 const state$ = createState$(action$);
 
-state$.observe((state) => {
+state$.skipRepeatsWith(deepEqual).observe((state) => {
   if (state.players.length) {
     state.players.forEach((socket) => {
       socket.emit('state', personalizeState(state));

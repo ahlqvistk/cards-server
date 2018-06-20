@@ -12,6 +12,7 @@
   "author": "Kristoffer Ahlqvist",
   "dependencies": {
     "@most/create": "^2.0.1",
+    "deep-equal": "^1.0.1",
     "express": "^4.16.3",
     "most": "^1.7.3",
     "socket.io": "^2.1.1"
