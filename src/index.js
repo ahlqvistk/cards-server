@@ -14,8 +14,14 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-const publicPath = process.env.PUBLIC || 'public';
-app.use(express.static(path.join(__dirname, publicPath)));
+const publicPath = process.env.CARDS_PUBLIC ?
+  path.join(__dirname, process.env.CARDS_PUBLIC) : 'public';
+app.use(express.static(publicPath));
+
+const port = process.env.PORT || 8080;
+server.listen(port, () => {
+  console.log('listening on *:' + port);
+});
 
 function personalizeState(state) {
   const players = state.players.map((socket) => socket.id);
@@ -35,8 +41,4 @@ state$.skipRepeatsWith(deepEqual).observe((state) => {
       socket.emit('state', personalizeState(state));
     });
   }
-});
-
-server.listen(3000, () => {
-  console.log('listening on *:3000');
 });

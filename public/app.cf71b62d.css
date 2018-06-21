@@ -1,0 +1,1 @@
+*{box-sizing:border-box}body,html{height:100%}body{background-color:#076324;margin:0}.player{background-color:#fff;position:absolute;text-align:center;width:250px}.player-0{bottom:0}.player-0,.player-1{left:50%;margin-left:-125px}.player-1{top:0}.player-2{top:50%}.player-3{top:50%;right:0}.table{border:1px dashed;border-radius:50%;height:100%;width:100%}

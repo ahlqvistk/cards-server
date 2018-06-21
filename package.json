@@ -2,8 +2,9 @@
   "name": "cards-server",
   "version": "1.0.0",
   "scripts": {
+    "dev": "CARDS_PUBLIC='../../cards-client/dist' nodemon src",
     "lint": "eslint src",
-    "start": "PUBLIC='../../cards-client/dist' nodemon src",
+    "start": "node src",
     "test": "jest --watchAll"
   },
   "pre-commit": [
