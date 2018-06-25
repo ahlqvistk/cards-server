@@ -12,7 +12,7 @@ module.exports = function update(state, {type, payload}) {
     const players = state.players.filter((socket) => {
       return socket.id !== payload.socketId;
     });
-    if (payload.socketId === state.creator) {
+    if (payload.socketId === state.creator || !state.players.length) {
       return {...state, players, creator: ''};
     }
     return {...state, players};
