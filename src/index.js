@@ -9,6 +9,7 @@ const socketio = require('socket.io');
 const createGameEngineAction$ = require('./create-game-engine-action-stream');
 const createSocketAction$ = require('./create-socket-action-stream');
 const createState$ = require('./create-state-stream');
+const personalizeState = require('./personalize-state');
 
 const app = express();
 const server = http.createServer(app);
@@ -23,11 +24,6 @@ server.listen(port, () => {
   console.log('listening on *:' + port);
 });
 
-function personalizeState(state) {
-  const players = state.players.map((socket) => socket.id);
-  return {...state, players};
-}
-
 const {attach, stream} = proxy();
 const gameEngineAction$ = createGameEngineAction$(stream);
 const socketAction$ = createSocketAction$(io);
@@ -38,7 +34,7 @@ attach(state$);
 state$.skipRepeatsWith(deepEqual).observe((state) => {
   if (state.players.length) {
     state.players.forEach((socket) => {
-      socket.emit('state', personalizeState(state));
+      socket.emit('state', personalizeState(socket.id, state));
     });
   }
 });
