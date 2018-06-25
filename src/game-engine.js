@@ -1,8 +1,8 @@
 module.exports = function gameEngine(state, add) {
-  if (state.players.length === 4) {
+  if (!state.creator && state.players.length) {
     add({
-      type: 'start game',
-      payload: {},
+      type: 'add creator',
+      payload: {creator: state.players[0].id},
     });
   }
 };

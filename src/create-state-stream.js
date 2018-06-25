@@ -3,6 +3,7 @@ const {create} = require('@most/create');
 const update = require('./update');
 
 let state = {
+  creator: '',
   players: [],
 };
 
