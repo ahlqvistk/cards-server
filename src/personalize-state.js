@@ -1,4 +1,8 @@
+const removeKeys = require('./func/remove-keys');
+
 module.exports = function personalizeState(id, state) {
+  const keysToHide = ['deck'];
   const players = state.players.map((socket) => socket.id);
-  return {...state, id, players};
+
+  return {...removeKeys(keysToHide, state), id, players};
 };
