@@ -25,7 +25,15 @@ module.exports = function gameEngine(state, add) {
       });
     }
     break;
-  case 'game started':
+  case 'shuffle':
+    // create deck
+    if (state.deck.length !== 52) {
+      add({
+        type: 'create deck',
+      });
+    }
+    // shuffle deck
+    // change status to dealing
     break;
   default:
     break;

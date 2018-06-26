@@ -4,7 +4,9 @@ const update = require('./update');
 
 let state = {
   creator: '',
+  deck: [],
   players: [],
+  round: 0,
   status: 'waiting for players',
 };
 
