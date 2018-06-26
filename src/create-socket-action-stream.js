@@ -24,7 +24,7 @@ module.exports = function createSocketAction$(io) {
     socket$.observe((socket) => {
       socket.on('action', (data) => {
         add({
-          type: data.action,
+          type: 'client ' + data.type,
           payload: {
             socketId: socket.id,
             data: data,
