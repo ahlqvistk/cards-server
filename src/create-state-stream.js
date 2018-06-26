@@ -5,6 +5,7 @@ const update = require('./update');
 let state = {
   creator: '',
   players: [],
+  status: 'waiting for players',
 };
 
 module.exports = function createState$(action$) {

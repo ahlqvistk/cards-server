@@ -20,6 +20,9 @@ module.exports = function update(state, {type, payload}) {
   case 'add creator': {
     return {...state, creator: payload.creator};
   }
+  case 'change status': {
+    return {...state, status: payload.status};
+  }
   default:
     return state;
   }
