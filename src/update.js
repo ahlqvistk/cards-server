@@ -23,6 +23,10 @@ module.exports = function update(state, {type, payload}) {
   case 'change status': {
     return {...state, status: payload.status};
   }
+  case 'client start game': {
+    // add* ready to start check
+    return {...state, status: 'game started'};
+  }
   default:
     return state;
   }

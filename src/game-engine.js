@@ -25,6 +25,8 @@ module.exports = function gameEngine(state, add) {
       });
     }
     break;
+  case 'game started':
+    break;
   default:
     break;
   }
