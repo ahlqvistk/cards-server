@@ -1,4 +1,5 @@
 const createDeck = require('./func/create-deck.js');
+const randomFromArray = require('./func/random-from-array');
 const shuffleArray = require('./func/shuffle-array.js');
 
 module.exports = function update(state, {type, payload}) {
@@ -32,10 +33,19 @@ module.exports = function update(state, {type, payload}) {
     return {...state, round: 1, status: 'shuffle'};
   }
   case 'create deck': {
-    return {...state, deck: createDeck()};
+    const deck = {...state.deck, cards: createDeck()};
+    return {...state, deck};
   }
   case 'shuffle deck': {
-    return {...state, deck: shuffleArray(state.deck)};
+    const deck = {
+      ...state.deck,
+      cards: shuffleArray(state.deck.cards),
+      status: 'shuffled',
+    };
+    return {...state, deck};
+  }
+  case 'select random dealer': {
+    return {...state, dealer: randomFromArray(state.players).id};
   }
   default:
     return state;

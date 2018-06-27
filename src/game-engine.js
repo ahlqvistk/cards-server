@@ -33,14 +33,30 @@ module.exports = function gameEngine(state, add) {
       });
     }
     // shuffle deck
-    add({
-      type: 'shuffle deck',
-    });
+    if (state.deck.status !== 'shuffled') {
+      add({
+        type: 'shuffle deck',
+      });
+    }
     // change status to dealing
     add({
       type: 'change status',
       payload: {status: 'dealing'},
     });
+    break;
+  case 'dealing':
+    // select dealer, random round 1, then next
+    if (state.round <= 1 && !state.dealer) {
+      add({
+        type: 'select random dealer',
+      });
+    } else if (state.round > 1) {
+      add({
+        type: 'select next dealer',
+      });
+    }
+    // deal cards, round determines how many
+    // change status to bidding
     break;
   default:
     break;
