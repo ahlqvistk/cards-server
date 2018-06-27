@@ -33,7 +33,14 @@ module.exports = function gameEngine(state, add) {
       });
     }
     // shuffle deck
+    add({
+      type: 'shuffle deck',
+    });
     // change status to dealing
+    add({
+      type: 'change status',
+      payload: {status: 'dealing'},
+    });
     break;
   default:
     break;

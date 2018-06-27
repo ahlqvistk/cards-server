@@ -1,4 +1,5 @@
 const createDeck = require('./func/create-deck.js');
+const shuffleArray = require('./func/shuffle-array.js');
 
 module.exports = function update(state, {type, payload}) {
   console.log('action:', type);
@@ -32,6 +33,9 @@ module.exports = function update(state, {type, payload}) {
   }
   case 'create deck': {
     return {...state, deck: createDeck()};
+  }
+  case 'shuffle deck': {
+    return {...state, deck: shuffleArray(state.deck)};
   }
   default:
     return state;
