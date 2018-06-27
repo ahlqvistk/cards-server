@@ -47,6 +47,13 @@ module.exports = function update(state, {type, payload}) {
   case 'select random dealer': {
     return {...state, dealer: randomFromArray(state.players).id};
   }
+  case 'select next dealer': {
+    const players = state.players.map((player) => player.id);
+    const index = players.indexOf(state.dealer);
+    const nextIndex = (index + 1) % players.length;
+
+    return {...state, dealer: state.players[nextIndex].id};
+  }
   default:
     return state;
   }
