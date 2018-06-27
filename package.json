@@ -5,10 +5,12 @@
     "dev": "CARDS_PUBLIC='../../cards-client/dist' nodemon src",
     "lint": "eslint src",
     "start": "node src",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "test:once": "jest"
   },
   "pre-commit": [
-    "lint"
+    "lint",
+    "test:once"
   ],
   "author": "Kristoffer Ahlqvist",
   "dependencies": {
