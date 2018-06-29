@@ -5,7 +5,7 @@ module.exports = function gameEngine(state) {
     if (!state.creator && state.players.length) {
       return {
         type: 'add creator',
-        payload: {creator: state.players[0].id},
+        payload: {creator: state.players[0].socket.id},
       };
     }
     // When 4 players has joined, change status
@@ -55,6 +55,7 @@ module.exports = function gameEngine(state) {
       };
     }
     // deal cards, round determines how many
+    // select trump card
     // change status to bidding
     break;
   default:

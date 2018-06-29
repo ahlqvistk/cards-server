@@ -9,12 +9,12 @@ module.exports = function update(state, {type, payload}) {
     if (state.players.length >= 4) {
       return state;
     }
-    const players = state.players.concat([payload.socket]);
+    const players = state.players.concat([{socket: payload.socket}]);
     return {...state, players};
   }
   case 'player disconnected': {
-    const players = state.players.filter((socket) => {
-      return socket.id !== payload.socketId;
+    const players = state.players.filter((player) => {
+      return player.socket.id !== payload.socketId;
     });
     if (payload.socketId === state.creator || !state.players.length) {
       return {...state, players, creator: ''};
@@ -45,14 +45,14 @@ module.exports = function update(state, {type, payload}) {
     return {...state, deck};
   }
   case 'select random dealer': {
-    return {...state, dealer: randomFromArray(state.players).id};
+    return {...state, dealer: randomFromArray(state.players).socket.id};
   }
   case 'select next dealer': {
-    const players = state.players.map((player) => player.id);
+    const players = state.players.map((player) => player.socket.id);
     const index = players.indexOf(state.dealer);
     const nextIndex = (index + 1) % players.length;
 
-    return {...state, dealer: state.players[nextIndex].id};
+    return {...state, dealer: state.players[nextIndex].socket.id};
   }
   default:
     return state;

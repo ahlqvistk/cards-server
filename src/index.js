@@ -33,8 +33,8 @@ attach(state$);
 
 state$.skipRepeatsWith(deepEqual).observe((state) => {
   if (state.players.length) {
-    state.players.forEach((socket) => {
-      socket.emit('state', personalizeState(socket.id, state));
+    state.players.forEach((player) => {
+      player.socket.emit('state', personalizeState(player.socket.id, state));
     });
   }
 });

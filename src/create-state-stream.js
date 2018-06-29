@@ -9,7 +9,11 @@ let state = {
     status: '',
     cards: [],
   },
-  players: [],
+  players: [/*
+    {
+      socket: socket,
+    }
+*/],
   round: 0,
   status: 'waiting for players',
 };

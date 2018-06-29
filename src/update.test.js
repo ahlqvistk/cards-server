@@ -8,11 +8,20 @@ describe('player connected', () => {
     },
   };
   const state = {
-    players: ['1', '2', '3'],
+    players: [
+      {socket: '1'},
+      {socket: '2'},
+      {socket: '3'},
+    ],
   };
   const actual = update(state, action);
   const expected = {
-    players: ['1', '2', '3', '4'],
+    players: [
+      {socket: '1'},
+      {socket: '2'},
+      {socket: '3'},
+      {socket: '4'},
+    ],
   };
 
   test('should add player to players', () => {
@@ -32,11 +41,20 @@ describe('player disconnected', () => {
     },
   };
   const state = {
-    players: [{id: '1'}, {id: '2'}, {id: '3'}, {id: '4'}],
+    players: [
+      {socket: {id: '1'}},
+      {socket: {id: '2'}},
+      {socket: {id: '3'}},
+      {socket: {id: '4'}},
+    ],
   };
   const actual = update(state, action);
   const expected = {
-    players: [{id: '1'}, {id: '2'}, {id: '4'}],
+    players: [
+      {socket: {id: '1'}},
+      {socket: {id: '2'}},
+      {socket: {id: '4'}},
+    ],
   };
 
   test('should remove player from players', () => {
@@ -155,7 +173,12 @@ describe('select random dealer', () => {
   const state = {
     other: 'other data',
     dealer: '',
-    players: [{id: '1'}, {id: '2'}, {id: '3'}, {id: '4'}],
+    players: [
+      {socket: {id: '1'}},
+      {socket: {id: '2'}},
+      {socket: {id: '3'}},
+      {socket: {id: '4'}},
+    ],
   };
   const actual = update(state, action);
   test('should select a dealer', () => {
@@ -171,7 +194,12 @@ describe('select next dealer', () => {
   const state = {
     other: 'other data',
     dealer: '4',
-    players: [{id: '1'}, {id: '2'}, {id: '3'}, {id: '4'}],
+    players: [
+      {socket: {id: '1'}},
+      {socket: {id: '2'}},
+      {socket: {id: '3'}},
+      {socket: {id: '4'}},
+    ],
   };
   const actual = update(state, action);
   test('should select the next dealer', () => {
