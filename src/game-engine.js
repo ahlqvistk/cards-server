@@ -55,6 +55,15 @@ module.exports = function gameEngine(state) {
       };
     }
     // deal cards, round determines how many
+    if (!state.players[0].hasOwnProperty('cards') ||
+        !state.players[0].cards.length) {
+      return {
+        type: 'deal cards',
+        payload: {
+          nrOfCards: 10,
+        },
+      };
+    }
     // select trump card
     // change status to bidding
     break;

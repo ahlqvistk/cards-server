@@ -11,6 +11,7 @@ let state = {
   },
   players: [/*
     {
+      cards: [],
       socket: socket,
     }
 */],

@@ -1,6 +1,7 @@
-const createDeck = require('./func/create-deck.js');
+const createDeck = require('./func/create-deck');
+const dealCards = require('./func/deal-cards');
 const randomFromArray = require('./func/random-from-array');
-const shuffleArray = require('./func/shuffle-array.js');
+const shuffleArray = require('./func/shuffle-array');
 
 module.exports = function update(state, {type, payload}) {
   console.log('action:', type);
@@ -53,6 +54,18 @@ module.exports = function update(state, {type, payload}) {
     const nextIndex = (index + 1) % players.length;
 
     return {...state, dealer: state.players[nextIndex].socket.id};
+  }
+  case 'deal cards': {
+    const dealer = state.dealer;
+    const nrOfCards = payload.nrOfCards;
+    const {newDeck, newPlayers} = dealCards(
+      nrOfCards,
+      dealer,
+      state.deck,
+      state.players
+    );
+
+    return {...state, deck: newDeck, players: newPlayers};
   }
   default:
     return state;
