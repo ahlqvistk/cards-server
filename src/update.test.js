@@ -113,9 +113,9 @@ describe('client start game', () => {
   const expected = {
     other: 'other data',
     round: 1,
-    status: 'shuffle',
+    status: 'shuffling',
   };
-  test('should change status to shuffle and round to 1', () => {
+  test('should change status to shuffling and round to 1', () => {
     expect(actual).toEqual(expected);
   });
 });
@@ -168,7 +168,7 @@ describe('shuffle deck', () => {
 
 describe('select random dealer', () => {
   const action = {
-    type: 'select random dealer',
+    type: 'select random dealer and change status',
   };
   const state = {
     other: 'other data',
@@ -189,7 +189,7 @@ describe('select random dealer', () => {
 
 describe('select next dealer', () => {
   const action = {
-    type: 'select next dealer',
+    type: 'select next dealer and change status',
   };
   const state = {
     other: 'other data',

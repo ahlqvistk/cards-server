@@ -31,7 +31,7 @@ module.exports = function update(state, {type, payload}) {
   }
   case 'client start game': {
     // add* ready to start check
-    return {...state, round: 1, status: 'shuffle'};
+    return {...state, round: 1, status: 'shuffling'};
   }
   case 'create deck': {
     const deck = {...state.deck, cards: createDeck()};
@@ -45,15 +45,23 @@ module.exports = function update(state, {type, payload}) {
     };
     return {...state, deck};
   }
-  case 'select random dealer': {
-    return {...state, dealer: randomFromArray(state.players).socket.id};
+  case 'select random dealer and change status': {
+    return {
+      ...state,
+      dealer: randomFromArray(state.players).socket.id,
+      status: 'dealing',
+    };
   }
-  case 'select next dealer': {
+  case 'select next dealer and change status': {
     const players = state.players.map((player) => player.socket.id);
     const index = players.indexOf(state.dealer);
     const nextIndex = (index + 1) % players.length;
 
-    return {...state, dealer: state.players[nextIndex].socket.id};
+    return {
+      ...state,
+      dealer: state.players[nextIndex].socket.id,
+      status: 'dealing',
+    };
   }
   case 'deal cards': {
     const dealer = state.dealer;

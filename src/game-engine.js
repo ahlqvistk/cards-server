@@ -25,7 +25,7 @@ module.exports = function gameEngine(state) {
       };
     }
     break;
-  case 'shuffle':
+  case 'shuffling':
     // create deck
     if (state.deck.cards.length !== 52) {
       return {
@@ -40,20 +40,21 @@ module.exports = function gameEngine(state) {
     } else {
       return {
         type: 'change status',
-        payload: {status: 'dealing'},
+        payload: {status: 'selecting dealer'},
       };
     }
-  case 'dealing':
+  case 'selecting dealer':
     // select dealer, random round 1, then next
     if (state.round <= 1 && !state.dealer) {
       return {
-        type: 'select random dealer',
-      };
-    } else if (state.round > 1) {
-      return {
-        type: 'select next dealer',
+        type: 'select random dealer and change status',
       };
     }
+
+    return {
+      type: 'select next dealer and change status',
+    };
+  case 'dealing':
     // deal cards, round determines how many
     if (!state.players[0].hasOwnProperty('cards') ||
         !state.players[0].cards.length) {
