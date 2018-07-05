@@ -17,6 +17,7 @@ let state = {
 */],
   round: 0,
   status: 'waiting for players',
+  trump: '',
 };
 
 module.exports = function createState$(action$) {

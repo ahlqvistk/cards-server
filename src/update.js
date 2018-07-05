@@ -1,5 +1,6 @@
 const createDeck = require('./func/create-deck');
 const dealCards = require('./func/deal-cards');
+const pickCards = require('./func/pick-cards');
 const randomFromArray = require('./func/random-from-array');
 const shuffleArray = require('./func/shuffle-array');
 
@@ -74,6 +75,11 @@ module.exports = function update(state, {type, payload}) {
     );
 
     return {...state, deck: newDeck, players: newPlayers};
+  }
+  case 'pick trump card': {
+    const {cards, deck} = pickCards(1, state.deck);
+
+    return {...state, deck, trump: cards[0]};
   }
   default:
     return state;

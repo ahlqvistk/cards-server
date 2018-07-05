@@ -66,8 +66,16 @@ module.exports = function gameEngine(state) {
       };
     }
     // select trump card
+    if (!state.trump) {
+      return {
+        type: 'pick trump card',
+      };
+    }
     // change status to bidding
-    break;
+    return {
+      type: 'change status',
+      payload: {status: 'bidding'},
+    };
   default:
     break;
   }
