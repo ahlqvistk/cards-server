@@ -1,3 +1,4 @@
+const orderArrayFromIndex = require('./func/order-array-from-index');
 const removeKeys = require('./func/remove-keys');
 
 module.exports = function personalizeState(id, state) {
@@ -14,5 +15,10 @@ module.exports = function personalizeState(id, state) {
     return {...player, socket: {id: player.socket.id}};
   });
 
-  return {...removeKeys(keysToHide, state), id, players};
+  const currentPlayerIndex = players.map((player) => (
+    player.socket.id
+  )).indexOf(id);
+  const orderedPlayers = orderArrayFromIndex(currentPlayerIndex, players);
+
+  return {...removeKeys(keysToHide, state), id, players: orderedPlayers};
 };
