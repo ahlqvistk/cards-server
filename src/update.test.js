@@ -166,7 +166,7 @@ describe('shuffle deck', () => {
   });
 });
 
-describe('select random dealer', () => {
+describe('select random dealer and change status', () => {
   const action = {
     type: 'select random dealer and change status',
   };
@@ -187,7 +187,7 @@ describe('select random dealer', () => {
   });
 });
 
-describe('select next dealer', () => {
+describe('select next dealer and change status', () => {
   const action = {
     type: 'select next dealer and change status',
   };
@@ -206,4 +206,40 @@ describe('select next dealer', () => {
     expect(actual.dealer).toEqual('1');
     expect(update(actual, action).dealer).toEqual('2');
   });
+});
+
+// describe deal cards
+
+// describe pick trump card
+
+describe('client place bid', () => {
+  const action = {
+    type: 'client place bid',
+    payload: {
+      id: 'c',
+      bid: 4,
+    },
+  };
+  const state = {
+    other: 'other data',
+    dealer: '4',
+    players: [
+      {socket: {id: 'a'}, bid: null},
+      {socket: {id: 'b'}, bid: 2},
+      {socket: {id: 'c'}},
+      {socket: {id: 'd'}},
+    ],
+  };
+  const expected = {
+    other: 'other data',
+    dealer: '4',
+    players: [
+      {socket: {id: 'a'}, bid: null},
+      {socket: {id: 'b'}, bid: 2},
+      {socket: {id: 'c'}, bid: 4},
+      {socket: {id: 'd'}},
+    ],
+  };
+  const actual = update(state, action);
+  expect(actual).toEqual(expected);
 });

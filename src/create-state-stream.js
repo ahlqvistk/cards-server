@@ -11,8 +11,9 @@ let state = {
   },
   players: [/*
     {
+      bid: Int,
       cards: [],
-      socket: socket,
+      socket: Socket,
     }
 */],
   round: 0,

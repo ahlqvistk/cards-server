@@ -81,6 +81,15 @@ module.exports = function update(state, {type, payload}) {
 
     return {...state, deck, trump: cards[0]};
   }
+  case 'client place bid': {
+    const players = state.players.map((player) => {
+      if (player.socket.id === payload.id) {
+        return {...player, bid: payload.bid};
+      }
+      return player;
+    });
+    return {...state, players};
+  }
   default:
     return state;
   }
