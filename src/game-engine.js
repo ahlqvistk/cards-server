@@ -71,6 +71,21 @@ module.exports = function gameEngine(state) {
         type: 'pick trump card',
       };
     }
+    if (!state.activePlayer) {
+      // Get player after dealer
+      const activePlayerIndex = (state.players
+        .map((player, index) => ({id: player.socket.id, index}))
+        .filter((player) => player.id === state.dealer)
+        .map((player) => player.index)[0] + 1
+      ) % state.players.length;
+      const activePlayer = state.players[activePlayerIndex].socket.id;
+      return {
+        type: 'set active player',
+        payload: {
+          activePlayer,
+        },
+      };
+    }
     // change status to bidding
     return {
       type: 'change status',
