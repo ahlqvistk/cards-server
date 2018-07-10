@@ -102,6 +102,8 @@ module.exports = function gameEngine(state) {
       };
     }
     break;
+  case 'playing':
+    break;
   default:
     break;
   }

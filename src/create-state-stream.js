@@ -14,6 +14,7 @@ let state = {
     {
       bid: Int,
       cards: [],
+      playedCard: '',
       socket: Socket,
     }
 */],
