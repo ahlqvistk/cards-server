@@ -27,7 +27,7 @@ module.exports = function createSocketAction$(io) {
           type: 'client ' + data.type,
           payload: {
             socketId: socket.id,
-            data: data,
+            data: data.payload,
           },
         });
       });

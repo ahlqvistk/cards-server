@@ -216,11 +216,14 @@ describe('client place bid', () => {
   const action = {
     type: 'client place bid',
     payload: {
-      id: 'c',
-      bid: 4,
+      socketId: 'c',
+      data: {
+        bid: 4,
+      },
     },
   };
   const state = {
+    activePlayer: 'c',
     other: 'other data',
     dealer: '4',
     players: [
@@ -231,6 +234,7 @@ describe('client place bid', () => {
     ],
   };
   const expected = {
+    activePlayer: 'd',
     other: 'other data',
     dealer: '4',
     players: [

@@ -95,7 +95,7 @@ module.exports = function gameEngine(state) {
     // If all players has made a bid, change status to playing
     if (state.players.filter((player) => (
       player.hasOwnProperty('bid') && player.bid >= 0
-    )) === state.players.length) {
+    )).length === state.players.length) {
       return {
         type: 'change status',
         payload: {status: 'playing'},

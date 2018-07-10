@@ -1,5 +1,6 @@
 const createDeck = require('./func/create-deck');
 const dealCards = require('./func/deal-cards');
+const nextPlayer = require('./func/next-player');
 const pickCards = require('./func/pick-cards');
 const randomFromArray = require('./func/random-from-array');
 const shuffleArray = require('./func/shuffle-array');
@@ -86,12 +87,13 @@ module.exports = function update(state, {type, payload}) {
   }
   case 'client place bid': {
     const players = state.players.map((player) => {
-      if (player.socket.id === payload.id) {
-        return {...player, bid: payload.bid};
+      if (player.socket.id === payload.socketId) {
+        return {...player, bid: payload.data.bid};
       }
       return player;
     });
-    return {...state, players};
+    const activePlayer = nextPlayer(payload.socketId, players);
+    return {...state, activePlayer, players};
   }
   default:
     return state;
