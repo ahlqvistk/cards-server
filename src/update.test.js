@@ -227,10 +227,10 @@ describe('client place bid', () => {
     other: 'other data',
     dealer: '4',
     players: [
-      {socket: {id: 'a'}, bid: null},
-      {socket: {id: 'b'}, bid: 2},
-      {socket: {id: 'c'}},
-      {socket: {id: 'd'}},
+      {cards: ['c2', 'c3', 'c4', 'c5'], socket: {id: 'a'}, bid: null},
+      {cards: ['d2', 'd3', 'd4', 'd5'], socket: {id: 'b'}, bid: 2},
+      {cards: ['h2', 'h3', 'h4', 'h5'], socket: {id: 'c'}},
+      {cards: ['s2', 's3', 's4', 's5'], socket: {id: 'd'}},
     ],
   };
   const expected = {
@@ -238,10 +238,10 @@ describe('client place bid', () => {
     other: 'other data',
     dealer: '4',
     players: [
-      {socket: {id: 'a'}, bid: null},
-      {socket: {id: 'b'}, bid: 2},
-      {socket: {id: 'c'}, bid: 4},
-      {socket: {id: 'd'}},
+      {cards: ['c2', 'c3', 'c4', 'c5'], socket: {id: 'a'}, bid: null},
+      {cards: ['d2', 'd3', 'd4', 'd5'], socket: {id: 'b'}, bid: 2},
+      {cards: ['h2', 'h3', 'h4', 'h5'], socket: {id: 'c'}, bid: 4},
+      {cards: ['s2', 's3', 's4', 's5'], socket: {id: 'd'}},
     ],
   };
   const actual = update(state, action);

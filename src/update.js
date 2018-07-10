@@ -4,6 +4,7 @@ const nextPlayer = require('./func/next-player');
 const pickCards = require('./func/pick-cards');
 const randomFromArray = require('./func/random-from-array');
 const shuffleArray = require('./func/shuffle-array');
+const validBid = require('./func/valid-bid');
 
 module.exports = function update(state, {type, payload}) {
   console.log('action:', type);
@@ -86,14 +87,17 @@ module.exports = function update(state, {type, payload}) {
     return {...state, activePlayer: payload.activePlayer};
   }
   case 'client place bid': {
-    const players = state.players.map((player) => {
-      if (player.socket.id === payload.socketId) {
-        return {...player, bid: payload.data.bid};
-      }
-      return player;
-    });
-    const activePlayer = nextPlayer(payload.socketId, players);
-    return {...state, activePlayer, players};
+    if (validBid(payload.data.bid, state)) {
+      const players = state.players.map((player) => {
+        if (player.socket.id === payload.socketId) {
+          return {...player, bid: payload.data.bid};
+        }
+        return player;
+      });
+      const activePlayer = nextPlayer(payload.socketId, players);
+      return {...state, activePlayer, players};
+    }
+    return state;
   }
   default:
     return state;
