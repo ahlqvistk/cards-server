@@ -103,6 +103,17 @@ module.exports = function gameEngine(state) {
     }
     break;
   case 'playing':
+    // When all players have played their cards, change status to check winner
+    if (state.players.filter((player) => (
+      player.hasOwnProperty('playedCard') && player.playedCard
+    )).length === state.players.length) {
+      return {
+        type: 'change status',
+        payload: {status: 'check winner'},
+      };
+    }
+    break;
+  case 'check winner':
     break;
   default:
     break;
