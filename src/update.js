@@ -3,9 +3,10 @@ const dealCards = require('./func/deal-cards');
 const nextPlayer = require('./func/next-player');
 const pickCards = require('./func/pick-cards');
 const randomFromArray = require('./func/random-from-array');
-// const removeItemFromArray = require('./func/remove-item-from-array');
+const removeItemFromArray = require('./func/remove-item-from-array');
 const shuffleArray = require('./func/shuffle-array');
 const validBid = require('./func/valid-bid');
+const validPlay = require('./func/valid-play');
 
 module.exports = function update(state, {type, payload}) {
   console.log('action:', type);
@@ -100,21 +101,21 @@ module.exports = function update(state, {type, payload}) {
     }
     return state;
   }
-  /*
   case 'client play card': {
     if (validPlay(payload.data.playedCard, state)) {
       const players = state.players.map((player) => {
         if (player.socket.id === payload.socketId) {
-          const cards = removeItemFromArray(payload.data.playedCard);
-          return {...player, cards};
+          const playedCard = payload.data.playedCard;
+          const cards = removeItemFromArray(playedCard, player.cards);
+          return {...player, cards, playedCard};
         }
         const activePlayer = nextPlayer(payload.socketId, players);
-        return {...state, activePlayer, players};
+        const leadingPlayer = state.leadingPlayer || payload.socketId;
+        return {...state, activePlayer, players, leadingPlayer};
       });
     }
     return state;
   }
-  */
   default:
     return state;
   }

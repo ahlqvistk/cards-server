@@ -10,6 +10,7 @@ let state = {
     status: '',
     cards: [],
   },
+  leadingPlayer: '',
   players: [/*
     {
       bid: Int,

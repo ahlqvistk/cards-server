@@ -4,6 +4,7 @@ test('first player can play any card on hand', () => {
   const state = {
     activePlayer: 'a',
     dealer: 'd',
+    leadingPlayer: '',
     players: [
       {cards: ['c2', 'c3', 'c4'], socket: {id: 'a'}},
       {cards: ['d2', 'd3', 'd4'], socket: {id: 'b'}},
@@ -18,10 +19,11 @@ test('first player can play any card on hand', () => {
   expect(validPlay('sA', state)).toBe(false);
 });
 
-test.skip('other players need to follow suit if possible', () => {
+test('other players need to follow suit if possible', () => {
   const state = {
     activePlayer: 'c',
     dealer: 'a',
+    leadingPlayer: 'b',
     players: [
       {cards: ['c2', 'd2', 'h2'], socket: {id: 'a'}},
       {cards: ['d3', 'h3'], playedCard: 'c3', socket: {id: 'b'}},
@@ -36,10 +38,11 @@ test.skip('other players need to follow suit if possible', () => {
   expect(validPlay('c2', state)).toBe(false);
 });
 
-test.skip('players that can\'t follow suit can play any card on hand', () => {
+test('players that can\'t follow suit can play any card on hand', () => {
   const state = {
     activePlayer: 'd',
     dealer: 'a',
+    leadingPlayer: 'b',
     players: [
       {cards: ['c2', 'd2', 'h2'], socket: {id: 'a'}},
       {cards: ['d3', 'h3'], playedCard: 'c3', socket: {id: 'b'}},

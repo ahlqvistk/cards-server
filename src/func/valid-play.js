@@ -1,22 +1,34 @@
-const nextPlayer = require('./next-player');
+const getPlayer = require('./get-player');
+const {getSuit} = require('./get-rank-suit');
 
 module.exports = function validPlay(playedCard, state) {
-  const currentPlayersHand = state.players.filter((player) => {
-    return player.socket.id === state.activePlayer;
-  })[0].cards;
+  const currentPlayersHand = getPlayer(state.activePlayer, state.players).cards;
+  const playedCardInHand = currentPlayersHand.includes(playedCard);
 
-  // !!! Set startingPlayer in state
-  const firstPlayer = nextPlayer(state.dealer, state.players);
+  // Only cards in hand can be played
+  if (!playedCardInHand) {
+    return false;
+  }
 
-  // If it's the first players turn, any card on hand is allowed
-  if (state.activePlayer === firstPlayer) {
-    return currentPlayersHand.includes(playedCard);
+  // If it's the leading players turn, any card on hand is allowed
+  if (!state.leadingPlayer) {
+    return true;
   }
 
   // Other players need to follow suit if possible
-  /*
-  const currentSuit = state.players.filter((player) => {
-    return player.socket.id === firstPlayer;
-  })[0].playedCard;
-  */
+  const leadSuit = getSuit(
+    getPlayer(state.leadingPlayer, state.players).playedCard
+  );
+  const playedSuit = getSuit(playedCard);
+  const suitsOnHand = currentPlayersHand.map((card) => getSuit(card));
+
+  if (playedSuit === leadSuit) {
+    return true;
+  }
+
+  if (!suitsOnHand.includes(leadSuit)) {
+    return true;
+  }
+
+  return false;
 };
