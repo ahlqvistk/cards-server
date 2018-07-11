@@ -109,10 +109,12 @@ module.exports = function update(state, {type, payload}) {
           const cards = removeItemFromArray(playedCard, player.cards);
           return {...player, cards, playedCard};
         }
-        const activePlayer = nextPlayer(payload.socketId, players);
-        const leadingPlayer = state.leadingPlayer || payload.socketId;
-        return {...state, activePlayer, players, leadingPlayer};
+        return player;
       });
+
+      const activePlayer = nextPlayer(payload.socketId, state.players);
+      const leadingPlayer = state.leadingPlayer || payload.socketId;
+      return {...state, activePlayer, players, leadingPlayer};
     }
     return state;
   }

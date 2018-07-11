@@ -209,8 +209,8 @@ describe('select next dealer and change status', () => {
 });
 
 // describe deal cards
-
 // describe pick trump card
+// describe set active player
 
 describe('client place bid', () => {
   const action = {
@@ -242,6 +242,44 @@ describe('client place bid', () => {
       {cards: ['d2', 'd3', 'd4', 'd5'], socket: {id: 'b'}, bid: 2},
       {cards: ['h2', 'h3', 'h4', 'h5'], socket: {id: 'c'}, bid: 4},
       {cards: ['s2', 's3', 's4', 's5'], socket: {id: 'd'}},
+    ],
+  };
+  const actual = update(state, action);
+  expect(actual).toEqual(expected);
+});
+
+describe('client play card', () => {
+  const action = {
+    type: 'client play card',
+    payload: {
+      socketId: 'c',
+      data: {
+        playedCard: 's4',
+      },
+    },
+  };
+  const state = {
+    activePlayer: 'c',
+    other: 'other data',
+    dealer: 'a',
+    leadingPlayer: 'b',
+    players: [
+      {cards: ['c2', 'd3', 'h4', 's5'], socket: {id: 'a'}},
+      {cards: ['d4', 'h5', 's6'], socket: {id: 'b'}, playedCard: 'c3'},
+      {cards: ['s4', 'd5', 'h6', 's7'], socket: {id: 'c'}},
+      {cards: ['c5', 'd6', 'h7', 's8'], socket: {id: 'd'}},
+    ],
+  };
+  const expected = {
+    activePlayer: 'd',
+    other: 'other data',
+    dealer: 'a',
+    leadingPlayer: 'b',
+    players: [
+      {cards: ['c2', 'd3', 'h4', 's5'], socket: {id: 'a'}},
+      {cards: ['d4', 'h5', 's6'], socket: {id: 'b'}, playedCard: 'c3'},
+      {cards: ['d5', 'h6', 's7'], socket: {id: 'c'}, playedCard: 's4'},
+      {cards: ['c5', 'd6', 'h7', 's8'], socket: {id: 'd'}},
     ],
   };
   const actual = update(state, action);
