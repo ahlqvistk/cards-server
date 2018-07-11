@@ -1,5 +1,6 @@
-const orderArrayFromIndex = require('./func/order-array-from-index');
-const removeKeys = require('./func/remove-keys');
+const common = '../../cards-common/src/';
+const orderArrayFromIndex = require(common + 'order-array-from-index');
+const removeKeys = require(common + 'remove-keys');
 
 module.exports = function personalizeState(id, state) {
   const keysToHide = ['deck'];

@@ -1,12 +1,13 @@
-const createDeck = require('./func/create-deck');
-const dealCards = require('./func/deal-cards');
-const nextPlayer = require('./func/next-player');
-const pickCards = require('./func/pick-cards');
-const randomFromArray = require('./func/random-from-array');
-const removeItemFromArray = require('./func/remove-item-from-array');
-const shuffleArray = require('./func/shuffle-array');
-const validBid = require('./func/valid-bid');
-const validPlay = require('./func/valid-play');
+const common = '../../cards-common/src/';
+const createDeck = require(common + 'create-deck');
+const dealCards = require(common + 'deal-cards');
+const nextPlayer = require(common + 'next-player');
+const pickCards = require(common + 'pick-cards');
+const randomFromArray = require(common + 'random-from-array');
+const removeItemFromArray = require(common + 'remove-item-from-array');
+const shuffleArray = require(common + 'shuffle-array');
+const validBid = require(common + 'valid-bid');
+const validPlay = require(common + 'valid-play');
 
 module.exports = function update(state, {type, payload}) {
   console.log('action:', type);
