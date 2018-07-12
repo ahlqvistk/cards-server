@@ -1,3 +1,7 @@
+const common = '../../cards-common/src/';
+const getPlayerIndexFromId = require(common + 'get-player-index-from-id');
+const getWinningCardIndex = require(common + 'get-winning-card-index');
+
 module.exports = function gameEngine(state) {
   switch (state.status) {
   case 'waiting for players':
@@ -109,12 +113,28 @@ module.exports = function gameEngine(state) {
     )).length === state.players.length) {
       return {
         type: 'change status',
-        payload: {status: 'check winner'},
+        payload: {status: 'checking trick winner'},
       };
     }
     break;
-  case 'check winner':
-    break;
+  case 'checking trick winner': {
+    const leadingPlayerIndex = getPlayerIndexFromId(
+      state.leadingPlayer,
+      state.players
+    );
+    const playedCards = state.players.map((player) => player.playedCard);
+    const leadingCard = playedCards[leadingPlayerIndex];
+    const winningCardIndex = getWinningCardIndex(
+      leadingCard,
+      state.trump,
+      playedCards
+    );
+    const winningPlayer = state.players[winningCardIndex].socket.id;
+    return {
+      type: 'set trick winner and change status',
+      payload: {id: winningPlayer},
+    };
+  }
   default:
     break;
   }

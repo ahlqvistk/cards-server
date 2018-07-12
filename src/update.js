@@ -119,6 +119,27 @@ module.exports = function update(state, {type, payload}) {
     }
     return state;
   }
+  case 'set trick winner and change status': {
+    // Add 1 trick to winning player and remove playedCards
+    const players = state.players.map((player) => {
+      if (player.socket.id === payload.id) {
+        const tricks = player.hasOwnProperty('tricks') ? player.tricks + 1 : 1;
+        return {...player, playedCard: '', tricks};
+      }
+      return {...player, playedCard: ''};
+    });
+
+    const status = state.players[0].cards.length ?
+      'playing' :
+      'awarding points';
+
+    return {
+      ...state,
+      activePlayer: payload.id,
+      leadingPlayer: '',
+      players, status,
+    };
+  }
   default:
     return state;
   }

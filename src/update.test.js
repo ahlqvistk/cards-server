@@ -285,3 +285,40 @@ describe('client play card', () => {
   const actual = update(state, action);
   expect(actual).toEqual(expected);
 });
+
+describe('set trick winner and change status', () => {
+  const action = {
+    type: 'set trick winner and change status',
+    payload: {
+      id: 'b',
+    },
+  };
+  const state = {
+    activePlayer: 'd',
+    other: 'other data',
+    leadingPlayer: 'a',
+    players: [
+      {cards: ['c2', 'd3', 'h4'], socket: {id: 'a'}, playedCard: 'h8'},
+      {cards: ['d4', 's5', 's6'], socket: {id: 'b'}, playedCard: 'c3'},
+      {cards: ['s4', 'd5', 'h6'], socket: {id: 'c'}, playedCard: 'hA'},
+      {cards: ['c5', 'd6', 'h7'], socket: {id: 'd'}, playedCard: 'hQ'},
+    ],
+    status: 'checking trick winner',
+    trump: 'c5',
+  };
+  const expected = {
+    activePlayer: 'b',
+    other: 'other data',
+    leadingPlayer: '',
+    players: [
+      {cards: ['c2', 'd3', 'h4'], socket: {id: 'a'}, playedCard: ''},
+      {cards: ['d4', 's5', 's6'], socket: {id: 'b'}, playedCard: '', tricks: 1},
+      {cards: ['s4', 'd5', 'h6'], socket: {id: 'c'}, playedCard: ''},
+      {cards: ['c5', 'd6', 'h7'], socket: {id: 'd'}, playedCard: ''},
+    ],
+    status: 'playing',
+    trump: 'c5',
+  };
+  const actual = update(state, action);
+  expect(actual).toEqual(expected);
+});
