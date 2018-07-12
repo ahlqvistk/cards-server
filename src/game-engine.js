@@ -61,11 +61,16 @@ module.exports = function gameEngine(state) {
   case 'dealing':
     // deal cards, round determines how many
     if (!state.players[0].hasOwnProperty('cards') ||
-        !state.players[0].cards.length) {
+        !state.players[0].cards.length
+    ) {
+      const nrOfCards = state.round <= 10 ?
+        10 - state.round + 1 :
+        state.round - 10;
+
       return {
         type: 'deal cards',
         payload: {
-          nrOfCards: 10,
+          nrOfCards,
         },
       };
     }
