@@ -133,12 +133,34 @@ module.exports = function update(state, {type, payload}) {
       'playing' :
       'awarding points';
 
+    // Set activePlayer to winner and reset leading player
     return {
       ...state,
       activePlayer: payload.id,
       leadingPlayer: '',
       players, status,
     };
+  }
+  case 'award points': {
+    // award points and reset bids and tricks
+    const players = state.players.map((player) => {
+      const newPoints = player.bid === player.tricks ?
+        10 + player.tricks :
+        player.tricks;
+
+      const points = player.hasOwnProperty('points') ?
+        player.points + newPoints :
+        newPoints;
+
+      return {...player, bid: -1, tricks: 0, points};
+    });
+
+    const activePlayer = '';
+    const round = state.round + 1;
+    const status = round < 21 ? 'selecting dealer': 'checking game winner';
+    const trump = '';
+
+    return {...state, activePlayer, players, round, status, trump};
   }
   default:
     return state;

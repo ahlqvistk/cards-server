@@ -322,3 +322,37 @@ describe('set trick winner and change status', () => {
   const actual = update(state, action);
   expect(actual).toEqual(expected);
 });
+
+describe('award points', () => {
+  const action = {
+    type: 'award points',
+  };
+  const state = {
+    activePlayer: 'd',
+    other: 'other data',
+    players: [
+      {socket: {id: 'a'}, bid: 2, tricks: 2, points: 20},
+      {socket: {id: 'b'}, bid: 1, tricks: 3},
+      {socket: {id: 'c'}, bid: 2, tricks: 0, points: 10},
+      {socket: {id: 'd'}, bid: 0, tricks: 0, points: 0},
+    ],
+    round: 5,
+    status: 'awarding points',
+    trump: 'c5',
+  };
+  const expected = {
+    activePlayer: '',
+    other: 'other data',
+    players: [
+      {socket: {id: 'a'}, bid: -1, tricks: 0, points: 32},
+      {socket: {id: 'b'}, bid: -1, tricks: 0, points: 3},
+      {socket: {id: 'c'}, bid: -1, tricks: 0, points: 10},
+      {socket: {id: 'd'}, bid: -1, tricks: 0, points: 10},
+    ],
+    round: 6,
+    status: 'selecting dealer',
+    trump: '',
+  };
+  const actual = update(state, action);
+  expect(actual).toEqual(expected);
+});

@@ -135,6 +135,10 @@ module.exports = function gameEngine(state) {
       payload: {id: winningPlayer},
     };
   }
+  case 'awarding points':
+    return {
+      type: 'award points',
+    };
   default:
     break;
   }
