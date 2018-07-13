@@ -65,7 +65,7 @@ module.exports = function gameEngine(state) {
     ) {
       const nrOfCards = state.round <= 10 ?
         10 - state.round + 1 :
-        state.round - 10;
+        state.round - 9;
 
       return {
         type: 'deal cards',
