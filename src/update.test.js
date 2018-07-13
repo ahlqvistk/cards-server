@@ -350,7 +350,7 @@ describe('award points', () => {
       {socket: {id: 'd'}, bid: -1, tricks: 0, points: 10},
     ],
     round: 6,
-    status: 'selecting dealer',
+    status: 'shuffling',
     trump: '',
   };
   const actual = update(state, action);

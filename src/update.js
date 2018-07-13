@@ -157,7 +157,7 @@ module.exports = function update(state, {type, payload}) {
 
     const activePlayer = '';
     const round = state.round + 1;
-    const status = round < 20 ? 'selecting dealer': 'checking game winner';
+    const status = round < 20 ? 'shuffling': 'checking game winner';
     const trump = '';
 
     return {...state, activePlayer, players, round, status, trump};
