@@ -149,11 +149,11 @@ module.exports = function gameEngine(state) {
       const status = state.players[0].cards.length ?
         'playing' :
         'awarding points';
-      // Wait 3 seconds before changing status
+      // Wait 5 seconds before changing status
       setTimeout(() => resolve({
         type: 'reset trick and change status',
         payload: {status},
-      }), 3000);
+      }), 5000);
       break;
     }
     case 'awarding points':
