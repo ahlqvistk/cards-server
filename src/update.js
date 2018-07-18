@@ -119,26 +119,37 @@ module.exports = function update(state, {type, payload}) {
     }
     return state;
   }
-  case 'set trick winner and change status': {
-    // Add 1 trick to winning player and remove playedCards
+  case 'set trick winner': {
+    // Add 1 trick to winning player
     const players = state.players.map((player) => {
       if (player.socket.id === payload.id) {
         const tricks = player.hasOwnProperty('tricks') ? player.tricks + 1 : 1;
-        return {...player, playedCard: '', tricks};
+        return {...player, tricks};
       }
+      return {...player};
+    });
+
+    // Set trickWinner to winner
+    return {
+      ...state,
+      players,
+      trickWinner: payload.id,
+    };
+  }
+  case 'reset trick and change status': {
+    // Remove played cards
+    const players = state.players.map((player) => {
       return {...player, playedCard: ''};
     });
 
-    const status = state.players[0].cards.length ?
-      'playing' :
-      'awarding points';
-
-    // Set activePlayer to winner and reset leading player
+    // Set active player and reset leading player and trick winner
     return {
       ...state,
-      activePlayer: payload.id,
+      players,
+      activePlayer: state.trickWinner,
       leadingPlayer: '',
-      players, status,
+      trickWinner: '',
+      status: payload.status,
     };
   }
   case 'award points': {
@@ -152,7 +163,7 @@ module.exports = function update(state, {type, payload}) {
         player.points + newPoints :
         newPoints;
 
-      return {...player, bid: -1, tricks: 0, points};
+      return {...player, bid: -1, points, tricks: 0};
     });
 
     const activePlayer = '';

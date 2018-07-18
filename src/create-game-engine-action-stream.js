@@ -5,8 +5,8 @@ const gameEngine = require('./game-engine');
 
 module.exports = function createGameEngineAction$(state$) {
   return create((add, end, error) => {
-    state$.skipRepeatsWith(deepEqual).observe((state) => {
-      const action = gameEngine(state);
+    state$.skipRepeatsWith(deepEqual).observe(async (state) => {
+      const action = await gameEngine(state);
       action && add(action);
     });
   });

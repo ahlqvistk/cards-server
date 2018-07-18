@@ -286,9 +286,9 @@ describe('client play card', () => {
   expect(actual).toEqual(expected);
 });
 
-describe('set trick winner and change status', () => {
+describe('set trick winner', () => {
   const action = {
-    type: 'set trick winner and change status',
+    type: 'set trick winner',
     payload: {
       id: 'b',
     },
@@ -307,6 +307,55 @@ describe('set trick winner and change status', () => {
     trump: 'c5',
   };
   const expected = {
+    activePlayer: 'd',
+    other: 'other data',
+    leadingPlayer: 'a',
+    players: [
+      {cards: ['c2', 'd3', 'h4'], socket: {id: 'a'}, playedCard: 'h8'},
+      {
+        cards: ['d4', 's5', 's6'],
+        socket: {id: 'b'},
+        playedCard: 'c3',
+        tricks: 1,
+      },
+      {cards: ['s4', 'd5', 'h6'], socket: {id: 'c'}, playedCard: 'hA'},
+      {cards: ['c5', 'd6', 'h7'], socket: {id: 'd'}, playedCard: 'hQ'},
+    ],
+    status: 'checking trick winner',
+    trickWinner: 'b',
+    trump: 'c5',
+  };
+  const actual = update(state, action);
+  expect(actual).toEqual(expected);
+});
+
+describe('reset trick and change status', () => {
+  const action = {
+    type: 'reset trick and change status',
+    payload: {
+      status: 'playing',
+    },
+  };
+  const state = {
+    activePlayer: 'd',
+    other: 'other data',
+    leadingPlayer: 'a',
+    players: [
+      {cards: ['c2', 'd3', 'h4'], socket: {id: 'a'}, playedCard: 'h8'},
+      {
+        cards: ['d4', 's5', 's6'],
+        socket: {id: 'b'},
+        playedCard: 'c3',
+        tricks: 1,
+      },
+      {cards: ['s4', 'd5', 'h6'], socket: {id: 'c'}, playedCard: 'hA'},
+      {cards: ['c5', 'd6', 'h7'], socket: {id: 'd'}, playedCard: 'hQ'},
+    ],
+    status: 'checking trick winner',
+    trickWinner: 'b',
+    trump: 'c5',
+  };
+  const expected = {
     activePlayer: 'b',
     other: 'other data',
     leadingPlayer: '',
@@ -317,6 +366,7 @@ describe('set trick winner and change status', () => {
       {cards: ['c5', 'd6', 'h7'], socket: {id: 'd'}, playedCard: ''},
     ],
     status: 'playing',
+    trickWinner: '',
     trump: 'c5',
   };
   const actual = update(state, action);
