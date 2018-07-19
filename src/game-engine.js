@@ -161,6 +161,15 @@ module.exports = function gameEngine(state) {
         type: 'award points',
       });
       break;
+    case 'showing scoreboard': {
+      const status = state.round < 20 ? 'shuffling': 'ending game';
+      // Wait 7 seconds before changing status
+      setTimeout(() => resolve({
+        type: 'change status',
+        payload: {status},
+      }), 7000);
+      break;
+    }
     default:
       break;
     }
