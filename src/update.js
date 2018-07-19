@@ -155,12 +155,13 @@ module.exports = function update(state, {type, payload}) {
   case 'award points': {
     // award points and reset bids and tricks
     const players = state.players.map((player) => {
-      const newPoints = player.bid === player.tricks ?
-        10 + player.tricks :
-        player.tricks;
+      const tricks = player.hasOwnProperty('tricks') ? player.tricks : 0;
+      const newPoints = player.bid === tricks ?
+        [10 + tricks] :
+        [tricks];
 
       const points = player.hasOwnProperty('points') ?
-        player.points + newPoints :
+        player.points.concat(newPoints) :
         newPoints;
 
       return {...player, bid: -1, points, tricks: 0};
