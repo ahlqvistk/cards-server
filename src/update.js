@@ -1,13 +1,14 @@
-const common = '../../cards-common/src/';
-const createDeck = require(common + 'create-deck');
-const dealCards = require(common + 'deal-cards');
-const nextPlayer = require(common + 'next-player');
-const pickCards = require(common + 'pick-cards');
-const randomFromArray = require(common + 'random-from-array');
-const removeItemFromArray = require(common + 'remove-item-from-array');
-const shuffleArray = require(common + 'shuffle-array');
-const validBid = require(common + 'valid-bid');
-const validPlay = require(common + 'valid-play');
+const {
+  createDeck,
+  dealCards,
+  nextPlayer,
+  pickCards,
+  randomFromArray,
+  removeItemFromArray,
+  shuffleArray,
+  validBid,
+  validPlay,
+} = require('cards-common');
 
 module.exports = function update(state, {type, payload}) {
   console.log('action:', type);

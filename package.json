@@ -15,6 +15,7 @@
   "author": "Kristoffer Ahlqvist",
   "dependencies": {
     "@most/create": "^2.0.1",
+    "cards-common": "github:ahlqvistk/cards-common",
     "deep-equal": "^1.0.1",
     "express": "^4.16.3",
     "most": "^1.7.3",

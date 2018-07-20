@@ -1,7 +1,8 @@
 /* globals Promise */
-const common = '../../cards-common/src/';
-const getPlayerIndexFromId = require(common + 'get-player-index-from-id');
-const getWinningCardIndex = require(common + 'get-winning-card-index');
+const {
+  getPlayerIndexFromId,
+  getWinningCardIndex,
+} = require('cards-common');
 
 module.exports = function gameEngine(state) {
   return new Promise((resolve) => {
