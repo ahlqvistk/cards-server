@@ -175,6 +175,30 @@ module.exports = function update(state, {type, payload}) {
 
     return {...state, activePlayer, players, round, status, trump};
   }
+  case 'reset game': {
+    const activePlayer = '';
+    const dealer = '';
+    const deck = {cards: [], status: ''};
+    const leadingPlayer = '';
+    const players = state.players.map((player) => ({socket: player.socket}));
+    const round = 0;
+    const status = 'waiting for players';
+    const trickWinner = '';
+    const trump = '';
+
+    return {
+      ...state,
+      activePlayer,
+      dealer,
+      deck,
+      leadingPlayer,
+      players,
+      round,
+      status,
+      trickWinner,
+      trump,
+    };
+  }
   default:
     return state;
   }

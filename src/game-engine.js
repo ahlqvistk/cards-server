@@ -6,6 +6,13 @@ const {
 
 module.exports = function gameEngine(state) {
   return new Promise((resolve) => {
+    // Reset game
+    if (state.players.length < 4 && state.status !== 'waiting for players') {
+      resolve({
+        type: 'reset game',
+      });
+    }
+
     switch (state.status) {
     case 'waiting for players':
       // First that joins becomes creator
