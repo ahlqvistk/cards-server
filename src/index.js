@@ -16,7 +16,8 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 const publicPath = process.env.CARDS_PUBLIC ?
-  path.join(__dirname, process.env.CARDS_PUBLIC) : 'public';
+  path.join(__dirname, process.env.CARDS_PUBLIC) :
+  path.join(__dirname, 'public');
 app.use(express.static(publicPath));
 
 const port = process.env.PORT || 8080;
