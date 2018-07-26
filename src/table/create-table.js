@@ -3,7 +3,7 @@ const most = require('most');
 const {proxy} = require('most-proxy');
 
 const createGameEngineAction$ = require('./create-game-engine-action-stream');
-const createSocketAction$ = require('./create-socket-action-stream');
+const createSocketAction$ = require('../create-socket-action-stream');
 const createTable$ = require('./create-table-stream');
 const personalizeTable = require('./personalize-table');
 
