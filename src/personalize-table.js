@@ -3,9 +3,9 @@ const {
   removeKeys,
 } = require('cards-common');
 
-module.exports = function personalizeState(id, state) {
+module.exports = function personalizeTable(id, table) {
   const keysToHide = ['deck'];
-  const players = state.players.map((player) => {
+  const players = table.players.map((player) => {
     // Hide other players cards
     if (player.hasOwnProperty('cards')) {
       const cards = id === player.socket.id ?
@@ -22,5 +22,5 @@ module.exports = function personalizeState(id, state) {
   )).indexOf(id);
   const orderedPlayers = orderArrayFromIndex(currentPlayerIndex, players);
 
-  return {...removeKeys(keysToHide, state), id, players: orderedPlayers};
+  return {...removeKeys(keysToHide, table), id, players: orderedPlayers};
 };

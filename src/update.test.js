@@ -7,14 +7,14 @@ describe('player connected', () => {
       socket: '4',
     },
   };
-  const state = {
+  const table = {
     players: [
       {socket: '1'},
       {socket: '2'},
       {socket: '3'},
     ],
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   const expected = {
     players: [
       {socket: '1'},
@@ -28,7 +28,7 @@ describe('player connected', () => {
     expect(actual).toEqual(expected);
   });
 
-  test('should return the same state if players > 4', () => {
+  test('should return the same table if players > 4', () => {
     expect(update(expected, action)).toEqual(expected);
   });
 });
@@ -40,7 +40,7 @@ describe('player disconnected', () => {
       socketId: '3',
     },
   };
-  const state = {
+  const table = {
     players: [
       {socket: {id: '1'}},
       {socket: {id: '2'}},
@@ -48,7 +48,7 @@ describe('player disconnected', () => {
       {socket: {id: '4'}},
     ],
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   const expected = {
     players: [
       {socket: {id: '1'}},
@@ -69,10 +69,10 @@ describe('add creator', () => {
       creator: 'abc',
     },
   };
-  const state = {
+  const table = {
     creator: '',
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   const expected = {
     creator: 'abc',
   };
@@ -88,10 +88,10 @@ describe('change status', () => {
       status: 'new status',
     },
   };
-  const state = {
+  const table = {
     status: 'old status',
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   const expected = {
     status: 'new status',
   };
@@ -104,12 +104,12 @@ describe('client start game', () => {
   const action = {
     type: 'client start game',
   };
-  const state = {
+  const table = {
     other: 'other data',
     round: 0,
     status: 'old status',
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   const expected = {
     other: 'other data',
     round: 1,
@@ -124,13 +124,13 @@ describe('create deck', () => {
   const action = {
     type: 'create deck',
   };
-  const state = {
+  const table = {
     deck: {
       cards: [],
       status: '',
     },
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   const expected = {
     deck: {
       cards: [
@@ -152,17 +152,17 @@ describe('shuffle deck', () => {
   const action = {
     type: 'shuffle deck',
   };
-  const state = {
+  const table = {
     other: 'other data',
     deck: {
       cards: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
       status: '',
     },
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   test('should change deck status and shuffle the array', () => {
     expect(actual.deck.status).toEqual('shuffled');
-    expect(actual.deck.cards).not.toEqual(state.deck.cards);
+    expect(actual.deck.cards).not.toEqual(table.deck.cards);
   });
 });
 
@@ -170,7 +170,7 @@ describe('select random dealer and change status', () => {
   const action = {
     type: 'select random dealer and change status',
   };
-  const state = {
+  const table = {
     other: 'other data',
     dealer: '',
     players: [
@@ -180,10 +180,10 @@ describe('select random dealer and change status', () => {
       {socket: {id: '4'}},
     ],
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   test('should select a dealer', () => {
-    expect(actual.players).toEqual(state.players);
-    expect(actual.dealer).not.toEqual(state.dealer);
+    expect(actual.players).toEqual(table.players);
+    expect(actual.dealer).not.toEqual(table.dealer);
   });
 });
 
@@ -191,7 +191,7 @@ describe('select next dealer and change status', () => {
   const action = {
     type: 'select next dealer and change status',
   };
-  const state = {
+  const table = {
     other: 'other data',
     dealer: '4',
     players: [
@@ -201,7 +201,7 @@ describe('select next dealer and change status', () => {
       {socket: {id: '4'}},
     ],
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   test('should select the next dealer', () => {
     expect(actual.dealer).toEqual('1');
     expect(update(actual, action).dealer).toEqual('2');
@@ -222,7 +222,7 @@ describe('client place bid', () => {
       },
     },
   };
-  const state = {
+  const table = {
     activePlayer: 'c',
     other: 'other data',
     dealer: '4',
@@ -244,7 +244,7 @@ describe('client place bid', () => {
       {cards: ['s2', 's3', 's4', 's5'], socket: {id: 'd'}},
     ],
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   expect(actual).toEqual(expected);
 });
 
@@ -258,7 +258,7 @@ describe('client play card', () => {
       },
     },
   };
-  const state = {
+  const table = {
     activePlayer: 'c',
     other: 'other data',
     dealer: 'a',
@@ -282,7 +282,7 @@ describe('client play card', () => {
       {cards: ['c5', 'd6', 'h7', 's8'], socket: {id: 'd'}},
     ],
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   expect(actual).toEqual(expected);
 });
 
@@ -293,7 +293,7 @@ describe('set trick winner', () => {
       id: 'b',
     },
   };
-  const state = {
+  const table = {
     activePlayer: 'd',
     other: 'other data',
     leadingPlayer: 'a',
@@ -325,7 +325,7 @@ describe('set trick winner', () => {
     trickWinner: 'b',
     trump: 'c5',
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   expect(actual).toEqual(expected);
 });
 
@@ -336,7 +336,7 @@ describe('reset trick and change status', () => {
       status: 'playing',
     },
   };
-  const state = {
+  const table = {
     activePlayer: 'd',
     other: 'other data',
     leadingPlayer: 'a',
@@ -369,7 +369,7 @@ describe('reset trick and change status', () => {
     trickWinner: '',
     trump: 'c5',
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   expect(actual).toEqual(expected);
 });
 
@@ -377,7 +377,7 @@ describe('award points', () => {
   const action = {
     type: 'award points',
   };
-  const state = {
+  const table = {
     activePlayer: 'd',
     other: 'other data',
     players: [
@@ -403,6 +403,6 @@ describe('award points', () => {
     status: 'showing scoreboard',
     trump: '',
   };
-  const actual = update(state, action);
+  const actual = update(table, action);
   expect(actual).toEqual(expected);
 });

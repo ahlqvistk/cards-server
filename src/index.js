@@ -16,19 +16,19 @@ const publicPath = process.env.CARDS_PUBLIC ?
   path.join(__dirname, 'public');
 
 app.use('/', express.static(publicPath));
-app.use('/table/:table', express.static(publicPath));
-app.get('/create/:table', (req, res) => {
-  const table = req.params.table;
+app.use('/table/:tableId', express.static(publicPath));
+app.get('/create/:tableId', (req, res) => {
+  const tableId = req.params.tableId;
 
-  if (tables.hasOwnProperty(table)) {
+  if (tables.hasOwnProperty(tableId)) {
     res.send('Table already exists.');
     return;
   }
 
-  console.log('Creating table', table);
-  createTable(table, io);
-  tables[table] = 'created';
-  res.send(`Table ${table} created.`);
+  console.log('Creating table', tableId);
+  createTable(tableId, io);
+  tables[tableId] = 'created';
+  res.send(`Table ${tableId} created.`);
 });
 
 const port = process.env.PORT || 8080;

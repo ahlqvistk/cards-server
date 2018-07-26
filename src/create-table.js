@@ -4,11 +4,11 @@ const {proxy} = require('most-proxy');
 
 const createGameEngineAction$ = require('./create-game-engine-action-stream');
 const createSocketAction$ = require('./create-socket-action-stream');
-const createState$ = require('./create-state-stream');
-const personalizeState = require('./personalize-state');
+const createTable$ = require('./create-table-stream');
+const personalizeTable = require('./personalize-table');
 
-module.exports = function createTable(table, io) {
-  let state = {
+module.exports = function createTable(tableId, io) {
+  let table = {
     activePlayer: '',
     creator: '',
     dealer: '',
@@ -31,18 +31,18 @@ module.exports = function createTable(table, io) {
     trump: '',
   };
 
-  const nsp = io.of('/table/' + table + '/');
+  const nsp = io.of(`/table/${tableId}/`);
   const {attach, stream} = proxy();
   const gameEngineAction$ = createGameEngineAction$(stream);
   const socketAction$ = createSocketAction$(nsp);
   const action$ = most.merge(gameEngineAction$, socketAction$);
-  const state$ = createState$(state, action$);
-  attach(state$);
+  const table$ = createTable$(table, action$);
+  attach(table$);
 
-  state$.skipRepeatsWith(deepEqual).observe((state) => {
-    if (state.players.length) {
-      state.players.forEach((player) => {
-        player.socket.emit('table', personalizeState(player.socket.id, state));
+  table$.skipRepeatsWith(deepEqual).observe((table) => {
+    if (table.players.length) {
+      table.players.forEach((player) => {
+        player.socket.emit('table', personalizeTable(player.socket.id, table));
       });
     }
   });
