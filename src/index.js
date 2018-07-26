@@ -3,7 +3,7 @@ const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
 
-const createTable = require('./create-table');
+const createTable = require('./table/create-table');
 
 const app = express();
 const server = http.createServer(app);
