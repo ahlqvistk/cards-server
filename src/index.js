@@ -3,32 +3,32 @@ const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
 
-const createRoom = require('./create-room');
+const createTable = require('./create-table');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-let rooms = {};
+let tables = {};
 
 const publicPath = process.env.CARDS_PUBLIC ?
   path.join(__dirname, process.env.CARDS_PUBLIC) :
   path.join(__dirname, 'public');
 
 app.use('/', express.static(publicPath));
-app.use('/room/:room', express.static(publicPath));
-app.get('/create/room/:room', (req, res) => {
-  const room = req.params.room;
+app.use('/table/:table', express.static(publicPath));
+app.get('/create/:table', (req, res) => {
+  const table = req.params.table;
 
-  if (rooms.hasOwnProperty(room)) {
-    res.send('Room already exists.');
+  if (tables.hasOwnProperty(table)) {
+    res.send('Table already exists.');
     return;
   }
 
-  console.log('Creating room', room);
-  createRoom(room, io);
-  rooms[room] = 'created';
-  res.send(`Room ${room} created.`);
+  console.log('Creating table', table);
+  createTable(table, io);
+  tables[table] = 'created';
+  res.send(`Table ${table} created.`);
 });
 
 const port = process.env.PORT || 8080;

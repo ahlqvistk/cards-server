@@ -7,7 +7,7 @@ const createSocketAction$ = require('./create-socket-action-stream');
 const createState$ = require('./create-state-stream');
 const personalizeState = require('./personalize-state');
 
-module.exports = function createRoom(room, io) {
+module.exports = function createTable(table, io) {
   let state = {
     activePlayer: '',
     creator: '',
@@ -31,7 +31,7 @@ module.exports = function createRoom(room, io) {
     trump: '',
   };
 
-  const nsp = io.of('/room/' + room + '/');
+  const nsp = io.of('/table/' + table + '/');
   const {attach, stream} = proxy();
   const gameEngineAction$ = createGameEngineAction$(stream);
   const socketAction$ = createSocketAction$(nsp);
