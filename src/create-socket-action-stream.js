@@ -1,8 +1,8 @@
 const most = require('most');
 const {create} = require('@most/create');
 
-module.exports = function createSocketAction$(io) {
-  const socket$ = most.fromEvent('connection', io);
+module.exports = function createSocketAction$(nsp) {
+  const socket$ = most.fromEvent('connection', nsp);
 
   const connect$ = socket$.map((socket) => ({
     type: 'player connected',
