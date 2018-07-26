@@ -3,6 +3,7 @@ const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
 
+const createLobby = require('./lobby/create-lobby');
 const createTable = require('./table/create-table');
 
 const app = express();
@@ -30,6 +31,8 @@ app.get('/create/:tableId', (req, res) => {
   tables[tableId] = 'created';
   res.send(`Table ${tableId} created.`);
 });
+
+createLobby(io, tables);
 
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
