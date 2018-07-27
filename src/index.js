@@ -14,7 +14,7 @@ let tables = {};
 
 const publicPath = process.env.CARDS_PUBLIC ?
   path.join(__dirname, process.env.CARDS_PUBLIC) :
-  path.join(__dirname, 'public');
+  'public';
 
 app.use('/', express.static(publicPath));
 app.use('/table/:tableId', express.static(publicPath));
