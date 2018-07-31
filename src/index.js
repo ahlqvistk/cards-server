@@ -1,5 +1,7 @@
+const EventEmitter = require('events');
 const express = require('express');
 const http = require('http');
+const most = require('most');
 const path = require('path');
 const socketio = require('socket.io');
 
@@ -9,10 +11,14 @@ const createTable = require('./table/create-table');
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+const tableEvents = new EventEmitter();
 
 let lobby = {
   tables: [],
 };
+
+const lobby$ = most.fromEvent('event', tableEvents);
+lobby$.observe((lobby) => console.log('tableEvent'));
 
 const publicPath = process.env.CARDS_PUBLIC ?
   path.join(__dirname, process.env.CARDS_PUBLIC) :
@@ -33,29 +39,37 @@ app.get('/create/:tableId', (req, res) => {
 
   action$.observe((action) => {
     if (['player connected', 'player disconnected'].includes(action.type)) {
-      // type: change numberOfPlayers
+      tableEvents.emit('event', {
+        type: 'change number of players',
       // payload: name, numberOfPlayers
+      });
     }
 
     if (action.type === 'client start game') {
-      // type: change status
+      tableEvents.emit('event', {
+        type: 'change status',
       // payload: name, status: 'game started'
+      });
     }
 
     if (
       action.type === 'change status' &&
       action.payload === 'waiting for players'
     ) {
-      // type: change status
+      tableEvents.emit('event', {
+        type: 'change status',
       // payload: name, status: 'open'
+      });
     }
 
     if (
       action.type === 'change status' &&
       action.payload === 'waiting to start game'
     ) {
-      // type: change status
+      tableEvents.emit('event', {
+        type: 'change status',
       // payload: 'closed'
+      });
     }
   });
 
