@@ -46,4 +46,6 @@ module.exports = function createTable(tableId, io) {
       });
     }
   });
+
+  return {action$, table$};
 };
