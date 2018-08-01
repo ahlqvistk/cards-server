@@ -1,3 +1,4 @@
+const bodyParser = require('body-parser');
 const EventEmitter = require('events');
 const express = require('express');
 const http = require('http');
@@ -12,6 +13,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 const tableEvents = new EventEmitter();
+const urlencodedParser = bodyParser.urlencoded({extended: true});
 
 const tables = {};
 createLobby(tableEvents, io);
@@ -22,8 +24,9 @@ const publicPath = process.env.CARDS_PUBLIC ?
 
 app.use('/', express.static(publicPath));
 app.use('/table/:id', express.static(publicPath));
-app.get('/create/:id', (req, res) => {
-  const id = req.params.id;
+app.post('/table', urlencodedParser, (req, res) => {
+  console.log(req.body);
+  const id = req.body.id;
 
   if (tables.hasOwnProperty(id)) {
     res.send('Table already exists.');
@@ -36,7 +39,7 @@ app.get('/create/:id', (req, res) => {
   createTableActionEvents(id, tableEvents, action$);
 
   tables[id] = 'created';
-  res.send(`Table ${id} created.`);
+  res.redirect('/table/' + id);
 });
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
