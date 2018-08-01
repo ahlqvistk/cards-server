@@ -4,8 +4,9 @@ const {proxy} = require('most-proxy');
 
 const createGameEngineAction$ = require('./create-game-engine-action-stream');
 const createSocketAction$ = require('../create-socket-action-stream');
-const createTable$ = require('./create-table-stream');
+const createState$ = require('../create-state-stream');
 const personalizeTable = require('./personalize-table');
+const update = require('./update');
 
 module.exports = function createTable(tableId, io) {
   let table = {
@@ -36,7 +37,7 @@ module.exports = function createTable(tableId, io) {
   const gameEngineAction$ = createGameEngineAction$(stream);
   const socketAction$ = createSocketAction$(nsp);
   const action$ = most.merge(gameEngineAction$, socketAction$);
-  const table$ = createTable$(table, action$);
+  const table$ = createState$(table, action$, update);
   attach(table$);
 
   table$.skipRepeatsWith(deepEqual).observe((table) => {

@@ -5,8 +5,10 @@ const most = require('most');
 const path = require('path');
 const socketio = require('socket.io');
 
-const createLobby = require('./lobby/create-lobby');
+const createSocketAction$ = require('./create-socket-action-stream');
+const createState$ = require('./create-state-stream');
 const createTable = require('./table/create-table');
+const update = require('./lobby/update');
 
 const app = express();
 const server = http.createServer(app);
@@ -17,8 +19,15 @@ let lobby = {
   tables: [],
 };
 
-const lobby$ = most.fromEvent('event', tableEvents);
-lobby$.observe((lobby) => console.log('tableEvent'));
+const nsp = io.of('/');
+const tableAction$ = most.fromEvent('event', tableEvents);
+const socketAction$ = createSocketAction$(nsp);
+const action$ = most.merge(tableAction$, socketAction$);
+const lobby$ = createState$(lobby, action$, update);
+
+lobby$.observe((lobby) => {
+  io.of('/').emit('lobby', lobby);
+});
 
 const publicPath = process.env.CARDS_PUBLIC ?
   path.join(__dirname, process.env.CARDS_PUBLIC) :
@@ -35,19 +44,30 @@ app.get('/create/:tableId', (req, res) => {
   }
 
   console.log('Creating table', tableId);
-  const {action$/* , table$ */} = createTable(tableId, io);
+  let {action$} = createTable(tableId, io);
 
   action$.observe((action) => {
-    if (['player connected', 'player disconnected'].includes(action.type)) {
+    if (action.type === 'player connected') {
       tableEvents.emit('event', {
-        type: 'change number of players',
-      // payload: name, numberOfPlayers
+        type: 'player joined table',
+        payload: {
+          name: tableId,
+        },
+      });
+    }
+
+    if (action.type === 'player disconnected') {
+      tableEvents.emit('event', {
+        type: 'player left table',
+        payload: {
+          name: tableId,
+        },
       });
     }
 
     if (action.type === 'client start game') {
       tableEvents.emit('event', {
-        type: 'change status',
+        type: 'table changed status',
       // payload: name, status: 'game started'
       });
     }
@@ -57,7 +77,7 @@ app.get('/create/:tableId', (req, res) => {
       action.payload === 'waiting for players'
     ) {
       tableEvents.emit('event', {
-        type: 'change status',
+        type: 'table changed status',
       // payload: name, status: 'open'
       });
     }
@@ -67,19 +87,21 @@ app.get('/create/:tableId', (req, res) => {
       action.payload === 'waiting to start game'
     ) {
       tableEvents.emit('event', {
-        type: 'change status',
+        type: 'table changed status',
       // payload: 'closed'
       });
     }
   });
 
-  lobby.tables.push({name: tableId});
-  // type: add table
-  // payload: name
+  tableEvents.emit('event', {
+    type: 'add table',
+    payload: {
+      name: tableId,
+    },
+  });
+
   res.send(`Table ${tableId} created.`);
 });
-
-createLobby(io, lobby);
 
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
