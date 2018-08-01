@@ -1,11 +1,11 @@
-module.exports = function createTableActionEvents(name, tableEvents, action$) {
+module.exports = function createTableActionEvents(id, tableEvents, action$) {
   action$.observe((action) => {
     switch (action.type) {
     case 'player connected':
       tableEvents.emit('event', {
         type: 'player joined table',
         payload: {
-          name,
+          id,
         },
       });
       break;
@@ -13,7 +13,7 @@ module.exports = function createTableActionEvents(name, tableEvents, action$) {
       tableEvents.emit('event', {
         type: 'player left table',
         payload: {
-          name,
+          id,
         },
       });
       break;
@@ -21,7 +21,7 @@ module.exports = function createTableActionEvents(name, tableEvents, action$) {
       tableEvents.emit('event', {
         type: 'table changed status',
         payload: {
-          name,
+          id,
           status: 'game started',
         },
       });
@@ -31,7 +31,7 @@ module.exports = function createTableActionEvents(name, tableEvents, action$) {
         tableEvents.emit('event', {
           type: 'table changed status',
           payload: {
-            name,
+            id,
             status: 'open',
           },
         });
@@ -41,7 +41,7 @@ module.exports = function createTableActionEvents(name, tableEvents, action$) {
         tableEvents.emit('event', {
           type: 'table changed status',
           payload: {
-            name,
+            id,
             status: 'closed',
           },
         });
@@ -55,7 +55,7 @@ module.exports = function createTableActionEvents(name, tableEvents, action$) {
   tableEvents.emit('event', {
     type: 'add table',
     payload: {
-      name,
+      id,
     },
   });
 };
