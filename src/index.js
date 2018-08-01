@@ -6,6 +6,7 @@ const socketio = require('socket.io');
 
 const createTable = require('./table/create-table');
 const createLobby = require('./lobby/create-lobby');
+const createTableActionEvents = require('./create-table-action-events');
 
 const app = express();
 const server = http.createServer(app);
@@ -32,69 +33,11 @@ app.get('/create/:tableId', (req, res) => {
   console.log('Creating table', tableId);
   const action$ = createTable(tableId, io);
 
-  action$.observe((action) => {
-    switch (action.type) {
-    case 'player connected':
-      tableEvents.emit('event', {
-        type: 'player joined table',
-        payload: {
-          name: tableId,
-        },
-      });
-      break;
-    case 'player disconnected':
-      tableEvents.emit('event', {
-        type: 'player left table',
-        payload: {
-          name: tableId,
-        },
-      });
-      break;
-    case 'client start game':
-      tableEvents.emit('event', {
-        type: 'table changed status',
-        payload: {
-          name: tableId,
-          status: 'game started',
-        },
-      });
-      break;
-    case 'change status':
-      if (action.payload === 'waiting for players') {
-        tableEvents.emit('event', {
-          type: 'table changed status',
-          payload: {
-            name: tableId,
-            status: 'open',
-          },
-        });
-      }
+  createTableActionEvents(tableId, tableEvents, action$);
 
-      if (action.payload === 'waiting to start game') {
-        tableEvents.emit('event', {
-          type: 'table changed status',
-          payload: {
-            name: tableId,
-            status: 'closed',
-          },
-        });
-      }
-      break;
-    default:
-      break;
-    }
-  });
-
-  tableEvents.emit('event', {
-    type: 'add table',
-    payload: {
-      name: tableId,
-    },
-  });
   tables[tableId] = 'created';
   res.send(`Table ${tableId} created.`);
 });
-
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
   console.log('listening on *:' + port);
