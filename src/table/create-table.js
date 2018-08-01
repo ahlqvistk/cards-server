@@ -9,7 +9,7 @@ const personalizeTable = require('./personalize-table');
 const update = require('./update');
 
 module.exports = function createTable(tableId, io) {
-  let table = {
+  const table = {
     activePlayer: '',
     creator: '',
     dealer: '',
@@ -48,5 +48,5 @@ module.exports = function createTable(tableId, io) {
     }
   });
 
-  return {action$, table$};
+  return action$;
 };

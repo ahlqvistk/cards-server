@@ -18,6 +18,6 @@ module.exports = function update(lobby, {type, payload}) {
     return lobby;
   }
   default:
-    break;
+    return lobby;
   }
 };
