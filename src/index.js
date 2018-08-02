@@ -25,7 +25,7 @@ const publicPath = process.env.CARDS_PUBLIC ?
 app.use('/', express.static(publicPath));
 app.use('/table/:id', express.static(publicPath));
 app.post('/table', urlencodedParser, (req, res) => {
-  console.log(req.body);
+  const hash = req.body.password ? req.body.password : '';
   const id = req.body.id;
 
   if (tables.hasOwnProperty(id)) {
@@ -34,7 +34,7 @@ app.post('/table', urlencodedParser, (req, res) => {
   }
 
   console.log('Creating table', id);
-  const action$ = createTable(id, io);
+  const action$ = createTable(id, io, hash);
 
   createTableActionEvents(id, tableEvents, action$);
 

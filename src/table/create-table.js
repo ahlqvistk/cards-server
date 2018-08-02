@@ -8,7 +8,7 @@ const createState$ = require('../create-state-stream');
 const personalizeTable = require('./personalize-table');
 const update = require('./update');
 
-module.exports = function createTable(tableId, io) {
+module.exports = function createTable(tableId, io, hash) {
   const table = {
     activePlayer: '',
     creator: '',
@@ -17,6 +17,7 @@ module.exports = function createTable(tableId, io) {
       status: '',
       cards: [],
     },
+    hash,
     leadingPlayer: '',
     players: [/*
       {
