@@ -1,13 +1,15 @@
 const update = require('./update');
 
-describe('player connected', () => {
+describe('client enter password', () => {
   const action = {
-    type: 'player connected',
+    type: 'client enter password',
     payload: {
+      data: {hash: 'pass'},
       socket: '4',
     },
   };
   const table = {
+    hash: 'pass',
     players: [
       {socket: '1'},
       {socket: '2'},
@@ -16,6 +18,7 @@ describe('player connected', () => {
   };
   const actual = update(table, action);
   const expected = {
+    hash: 'pass',
     players: [
       {socket: '1'},
       {socket: '2'},

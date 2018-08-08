@@ -14,7 +14,10 @@ module.exports = function update(table, {type, payload}) {
   console.log('action:', type);
   switch (type) {
   case 'player connected': {
-    if (table.players.length >= 4) {
+    return table;
+  }
+  case 'client enter password': {
+    if (table.players.length >= 4 || payload.data.hash !== table.hash) {
       return table;
     }
     const players = table.players.concat([{socket: payload.socket}]);

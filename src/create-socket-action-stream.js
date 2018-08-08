@@ -26,6 +26,7 @@ module.exports = function createSocketAction$(nsp) {
         add({
           type: 'client ' + data.type,
           payload: {
+            socket,
             socketId: socket.id,
             data: data.payload,
           },
