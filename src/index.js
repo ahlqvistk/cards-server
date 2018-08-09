@@ -27,6 +27,7 @@ app.use('/table/:id', express.static(publicPath));
 app.post('/table', urlencodedParser, (req, res) => {
   const hash = req.body.password ? req.body.password : '';
   const id = req.body.id;
+  const type = req.body.type;
 
   if (tables.hasOwnProperty(id)) {
     res.send('Table already exists.');
@@ -34,7 +35,7 @@ app.post('/table', urlencodedParser, (req, res) => {
   }
 
   console.log('Creating table', id);
-  const action$ = createTable(id, io, hash);
+  const action$ = createTable(id, io, hash, type);
 
   createTableActionEvents(id, tableEvents, action$);
 
