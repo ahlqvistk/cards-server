@@ -7,11 +7,13 @@ const {
 module.exports = function gameEngine(state) {
   return new Promise((resolve) => {
     // Reset game
+    /*
     if (state.players.length < 4 && state.status !== 'waiting for players') {
       resolve({
         type: 'reset game',
       });
     }
+    */
 
     switch (state.status) {
     case 'waiting for players':
@@ -22,8 +24,8 @@ module.exports = function gameEngine(state) {
           payload: {creator: state.players[0].socket.id},
         });
       }
-      // When 4 players has joined, change status
-      if (state.players.length === 4) {
+      // When 2 players has joined, change status
+      if (state.players.length >= 2) {
         resolve({
           type: 'change status',
           payload: {status: 'waiting to start game'},
@@ -32,12 +34,14 @@ module.exports = function gameEngine(state) {
       break;
     case 'waiting to start game':
       // If player leaves change status to waiting for players
+      /*
       if (state.players.length < 4) {
         resolve({
           type: 'change status',
           payload: {status: 'waiting for players'},
         });
       }
+      */
       break;
     case 'shuffling':
       // create deck

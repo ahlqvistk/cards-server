@@ -15,6 +15,7 @@ describe('client enter password', () => {
       {socket: '2'},
       {socket: '3'},
     ],
+    status: 'waiting for players',
   };
   const actual = update(table, action);
   const expected = {
@@ -25,6 +26,7 @@ describe('client enter password', () => {
       {socket: '3'},
       {socket: '4'},
     ],
+    status: 'waiting for players',
   };
 
   test('should add player to players', () => {

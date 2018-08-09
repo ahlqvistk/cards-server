@@ -17,7 +17,10 @@ module.exports = function update(table, {type, payload}) {
     return table;
   }
   case 'client enter password': {
-    if (table.players.length >= 4 || payload.data.hash !== table.hash) {
+    if (table.players.length >= 4 ||
+        payload.data.hash !== table.hash ||
+        !['waiting for players', 'waiting to start game'].includes(table.status)
+    ) {
       return table;
     }
     const players = table.players.concat([{socket: payload.socket}]);
