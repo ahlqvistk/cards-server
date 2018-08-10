@@ -1,4 +1,9 @@
-module.exports = function createTableActionEvents(id, tableEvents, action$) {
+module.exports = function createTableActionEvents(
+  id,
+  type,
+  tableEvents,
+  action$
+) {
   action$.observe((action) => {
     switch (action.type) {
     case 'player connected':
@@ -56,6 +61,7 @@ module.exports = function createTableActionEvents(id, tableEvents, action$) {
     type: 'add table',
     payload: {
       id,
+      type,
     },
   });
 };

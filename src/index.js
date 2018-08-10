@@ -37,7 +37,7 @@ app.post('/table', urlencodedParser, (req, res) => {
   console.log('Creating table', id);
   const action$ = createTable(id, io, hash, type);
 
-  createTableActionEvents(id, tableEvents, action$);
+  createTableActionEvents(id, type, tableEvents, action$);
 
   tables[id] = 'created';
   res.redirect('/table/' + id);

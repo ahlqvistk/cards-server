@@ -1,8 +1,7 @@
 module.exports = function update(lobby, {type, payload}) {
   switch (type) {
   case 'add table': {
-    console.log('updating lobby tables');
-    const tables = lobby.tables.concat({id: payload.id});
+    const tables = lobby.tables.concat({id: payload.id, type: payload.type});
     return {...lobby, tables};
   }
   case 'player connected': {
