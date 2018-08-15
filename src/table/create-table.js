@@ -50,5 +50,9 @@ module.exports = function createTable(tableId, io, hash, type) {
     }
   });
 
+  nsp.on('connection', (socket) => {
+    socket.emit('table', {type: table.type});
+  });
+
   return action$;
 };
