@@ -14,14 +14,7 @@ module.exports = function update(table, {type, payload}) {
   console.log('action:', type);
   switch (type) {
   case 'player connected': {
-    if (table.players.length >= 4 ||
-        table.type !== 'public' ||
-        !['waiting for players', 'waiting to start game'].includes(table.status)
-    ) {
-      return table;
-    }
-    const players = table.players.concat([{socket: payload.socket}]);
-    return {...table, players};
+    return table;
   }
   case 'client join table': {
     if (table.players.length >= 4 ||
