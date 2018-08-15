@@ -23,14 +23,17 @@ module.exports = function update(table, {type, payload}) {
     const players = table.players.concat([{socket: payload.socket}]);
     return {...table, players};
   }
-  case 'client enter password': {
+  case 'client join table': {
     if (table.players.length >= 4 ||
         payload.data.hash !== table.hash ||
         !['waiting for players', 'waiting to start game'].includes(table.status)
     ) {
       return table;
     }
-    const players = table.players.concat([{socket: payload.socket}]);
+    const players = table.players.concat([{
+      name: payload.data.name,
+      socket: payload.socket,
+    }]);
     return {...table, players};
   }
   case 'player disconnected': {

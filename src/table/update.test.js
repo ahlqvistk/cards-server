@@ -2,18 +2,18 @@ const update = require('./update');
 
 describe('client enter password', () => {
   const action = {
-    type: 'client enter password',
+    type: 'client join table',
     payload: {
-      data: {hash: 'pass'},
+      data: {name: 'player4', hash: 'pass'},
       socket: '4',
     },
   };
   const table = {
     hash: 'pass',
     players: [
-      {socket: '1'},
-      {socket: '2'},
-      {socket: '3'},
+      {name: 'player1', socket: '1'},
+      {name: 'player2', socket: '2'},
+      {name: 'player3', socket: '3'},
     ],
     status: 'waiting for players',
   };
@@ -21,10 +21,10 @@ describe('client enter password', () => {
   const expected = {
     hash: 'pass',
     players: [
-      {socket: '1'},
-      {socket: '2'},
-      {socket: '3'},
-      {socket: '4'},
+      {name: 'player1', socket: '1'},
+      {name: 'player2', socket: '2'},
+      {name: 'player3', socket: '3'},
+      {name: 'player4', socket: '4'},
     ],
     status: 'waiting for players',
   };
