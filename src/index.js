@@ -16,6 +16,7 @@ const tableEvents = new EventEmitter();
 const urlencodedParser = bodyParser.urlencoded({extended: true});
 
 const tables = {};
+
 createLobby(tableEvents, io);
 
 const publicPath = process.env.CARDS_PUBLIC ?
@@ -42,7 +43,9 @@ app.post('/table', urlencodedParser, (req, res) => {
   tables[id] = 'created';
   res.redirect('/table/' + id);
 });
+
 const port = process.env.PORT || 8080;
+
 server.listen(port, () => {
   console.log('listening on *:' + port);
 });
